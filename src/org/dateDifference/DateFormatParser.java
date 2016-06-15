@@ -2,15 +2,15 @@ package org.dateDifference;
 
 import java.text.ParseException;
 
-public class DateFormat implements Comparable {
+public class DateFormatParser  {
 	
-	static final int monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	static final int monthDays[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 	private int month;
 	private int date;
 	private int year;
 	
-	DateFormat(String date) throws ParseException{
+	public DateFormatParser(String date) throws ParseException{
 	
 		if(date==null){
 			throw new NullPointerException("date can't be null");
@@ -23,11 +23,14 @@ public class DateFormat implements Comparable {
 		this.month = Integer.parseInt(dateArray[0]);
 		this.date = Integer.parseInt(dateArray[1]);
 		this.year = Integer.parseInt(dateArray[2]);
+		if(this.date == 29 && this.month==2){
+			this.date = 28;
+		}
 		
 		if(this.year < 1900 || this.year > 9999){
 			throw  new IllegalArgumentException("illegal year format");
 		}
-		if(this.date < 0 || this.date>31){
+		if(this.date < 0 || this.date>31 || this.date > monthDays[month-1] || (this.date==29 && month==2&&year%4!=0) ){
 			throw  new IllegalArgumentException("illegal day format");
 		}
 		if(this.month < 0 || this.month>12){
@@ -48,13 +51,13 @@ public class DateFormat implements Comparable {
 	}
 	
 
-	 public static int findDays(DateFormat date1, DateFormat date2){
+	 public static int findDays(DateFormatParser date1, DateFormatParser date2){
 		 
 		 return (Math.abs(totalDaysToDate(date2) - totalDaysToDate(date1)));
 		 
 	 }
 	 
-	 public static int totalDaysToDate(DateFormat date){
+	 public static int totalDaysToDate(DateFormatParser date){
 		 
 		 //add total number of years and the date 
 		 int totalDays = date.getYear()*365 + date.getDate();
@@ -74,7 +77,7 @@ public class DateFormat implements Comparable {
 	 * @param date: date 
 	 * @return total number of leap years till that date
 	 */
-	public static int countLeapYears(DateFormat date){
+	public static int countLeapYears(DateFormatParser date){
 		 
 		 int count = 0;
 		 if(date.getMonth() <= 2 ){
@@ -85,10 +88,6 @@ public class DateFormat implements Comparable {
 		 return count;
 	 }
 
-	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	
 }

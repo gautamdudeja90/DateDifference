@@ -1,2 +1,3 @@
-org\dateDifference\DateFormat.class
-org\dateDifference\MainApplication.class
+org/dateDifference/DateFormatParser.class
+org/dateDifference/TestDataFormat.class
+org/dateDifference/MainApplication.class
